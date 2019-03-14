@@ -4,7 +4,7 @@
 #
 #  ~Dedicated to Mr.Schweitzer~
 #
-#  Version 1.1.0 alpha 3/14/19
+#  Version 1.2.0 beta 3/14/19
 #
 
 import xlrd
@@ -69,16 +69,17 @@ for i in range(len(finalRes)):
 finalRes=sorted(finalRes, key=lambda x : x[1])[::-1]
 # print(finalRes)
 
-
+top=int(input("Enter the number of top countries: \t"))
+bot=int(input("Enter the number of bottom countries: \t"))
 
 
 print("--------Results--------")
-print("Top 5:")
-for i in range(5):
-  print(str(i+1)+": "+finalRes[i][0])
-  print("\t"+str(finalRes[i][1]))
-print("\nBottom 5:")
-for i in range(4, -1, -1):
+print("Top "+str(top)+":")
+for i in range(top):
+  print(str(i+1)+":\t"+finalRes[i][0])
+  print("\t "+str(finalRes[i][1]))
+print("\nBottom "+str(bot)+":")
+for i in range(bot-1, -1, -1):
   print(str(len(finalRes)-i-1)+": "+finalRes[len(finalRes)-i-1][0])
   print("\t"+str(finalRes[len(finalRes)-i-1][1]))
 
