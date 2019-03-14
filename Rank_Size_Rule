@@ -4,7 +4,7 @@
 #
 #  ~Dedicated to Mr.Schweitzer~
 #
-#  Version 1.0.0 alpha 3/10/19
+#  Version 1.1.0 alpha 3/14/19
 #
 
 import xlrd
@@ -15,16 +15,21 @@ def abs(n):
 def error(a, e):
   if e==0:
     return e
-  return 100*abs(a-e)/e
+  return 100*abs(a-e)/a
 def getAns(arr): #[[City, pop], [city, pop], [city, pop]]
+  sArr=sorted(arr, key=lambda x : x[1])
+  accepted=0
+  experimental=0
   pops=[]
-  for i in range(len(arr)):
-    pops.append(arr[i][1])
+  for i in range(len(sArr)):
+    pops.append(sArr[i][1])
   pops=sorted(pops)
-  maxPop=pops[0]
   tot=0
   for i in range(len(pops)):
-    tot+=error(pops[0]/(i+1), pops[i])
+    experimental+=pops[0]/(i+1)
+    accepted+=pops[i]
+    # tot+=error(pops[0]/(i+1), pops[i])
+  tot= error(accepted, experimental)
   return round(tot/len(pops), 3)
 #input file
 book = xlrd.open_workbook('file.xlsx')
@@ -50,6 +55,7 @@ for key, val in countries.items():
   clist.append([key, val])
 # print(clist)
 for i in range(len(clist)):
+  # print(clist[i][1])
   res[clist[i][0]]=getAns(clist[i][1])
 
 # print(res)
@@ -57,10 +63,13 @@ finalRes=[]
 for key, val in res.items():
   finalRes.append([key, val])
 # print(finalRes)
+finalRes = [x for x in finalRes if x[1]!=0]
+for i in range(len(finalRes)):
+  finalRes[i][1]=abs(100-finalRes[i][1])
 finalRes=sorted(finalRes, key=lambda x : x[1])[::-1]
 # print(finalRes)
 
-finalRes = [x for x in finalRes if x[1]!=0]
+
 
 
 print("--------Results--------")
@@ -72,4 +81,10 @@ print("\nBottom 5:")
 for i in range(4, -1, -1):
   print(str(len(finalRes)-i-1)+": "+finalRes[len(finalRes)-i-1][0])
   print("\t"+str(finalRes[len(finalRes)-i-1][1]))
+
+
+# for i in range(len(finalRes)):
+#   if "Palau" in finalRes[i]:
+#     print(str(i))
+#     print(str(finalRes[i][1]))
 
