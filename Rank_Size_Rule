@@ -1,0 +1,75 @@
+#  https://github.com/Adamkadaban
+#
+#  Adam Hassan
+#
+#  ~Dedicated to Mr.Schweitzer~
+#
+#  Version 1.0.0 alpha 3/10/19
+#
+
+import xlrd
+def abs(n):
+  if n<0:
+    return n*-1
+  return n
+def error(a, e):
+  if e==0:
+    return e
+  return 100*abs(a-e)/e
+def getAns(arr): #[[City, pop], [city, pop], [city, pop]]
+  pops=[]
+  for i in range(len(arr)):
+    pops.append(arr[i][1])
+  pops=sorted(pops)
+  maxPop=pops[0]
+  tot=0
+  for i in range(len(pops)):
+    tot+=error(pops[0]/(i+1), pops[i])
+  return round(tot/len(pops), 3)
+#input file
+book = xlrd.open_workbook('file.xlsx')
+sheet = book.sheet_by_name('ws')
+
+#[0]=city name, [1]=country [2]=state/province [3]=population
+data = [[sheet.cell_value(r, c) for c in range(sheet.ncols)] for r in range(sheet.nrows)][1:]
+
+# print(data[1:3])
+
+countries={} #val=[city, pop]  {US:[["Davie", 50k],["Weston", 70k]]}
+res={}
+for i in range(len(data)):
+  if data[i][1] in countries.keys():
+    x=countries.get(data[i][1])
+    x.append([data[i][0], data[i][3]])
+    countries.update({data[i][1]:x})
+  else:
+    countries[data[i][1]]=[[data[i][0], data[i][3]]]
+
+clist=[] # [[Country, [[City, pop], [city, pop]]]]
+for key, val in countries.items():
+  clist.append([key, val])
+# print(clist)
+for i in range(len(clist)):
+  res[clist[i][0]]=getAns(clist[i][1])
+
+# print(res)
+finalRes=[]
+for key, val in res.items():
+  finalRes.append([key, val])
+# print(finalRes)
+finalRes=sorted(finalRes, key=lambda x : x[1])[::-1]
+# print(finalRes)
+
+finalRes = [x for x in finalRes if x[1]!=0]
+
+
+print("--------Results--------")
+print("Top 5:")
+for i in range(5):
+  print(str(i+1)+": "+finalRes[i][0])
+  print("\t"+str(finalRes[i][1]))
+print("\nBottom 5:")
+for i in range(4, -1, -1):
+  print(str(len(finalRes)-i-1)+": "+finalRes[len(finalRes)-i-1][0])
+  print("\t"+str(finalRes[len(finalRes)-i-1][1]))
+
