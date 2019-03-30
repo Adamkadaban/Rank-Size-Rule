@@ -7,7 +7,7 @@
 #  Version 1.2.0 beta 3/14/19
 #
 
-import xlrd
+import xlrd,os
 def abs(n):
   if n<0:
     return n*-1
@@ -83,9 +83,9 @@ for i in range(bot-1, -1, -1):
   print(str(len(finalRes)-i-1)+": "+finalRes[len(finalRes)-i-1][0])
   print("\t"+str(finalRes[len(finalRes)-i-1][1]))
 
+os.system("pause")
 
 # for i in range(len(finalRes)):
 #   if "Palau" in finalRes[i]:
 #     print(str(i))
 #     print(str(finalRes[i][1]))
-
