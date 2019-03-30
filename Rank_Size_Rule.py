@@ -8,10 +8,6 @@
 #
 
 import xlrd,os
-def abs(n):
-  if n<0:
-    return n*-1
-  return n
 def error(a, e):
   if e==0:
     return e
